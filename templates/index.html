@@ -26,17 +26,19 @@
             google.maps.event.addDomListener(window, 'load', initialize)
 
             function getTweet() {
-                console.log("check");
-
+                $.get(
+                    '/get-tweet',
+                    function(response) {
+                        console.log(response)
+                    }
+                );
             }
 
         </script>
 
         <div id="map"></div>
         <div>
-            <!-- <form action="/get-tweet"> -->
-                <button id="get-tweet">Get Tweet</button>
-            <!-- </form> -->
+            <button id="get-tweet">Get Tweet</button>
         </div>
         <div id="temp-input">
         </div>

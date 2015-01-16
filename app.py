@@ -1,7 +1,8 @@
 import os
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 import model
 import random
+import json
 
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
 
@@ -23,7 +24,12 @@ def get_tweet():
     rand_key = random.randrange(1, model.session.query(model.Tweet).count())
     tweet = model.session.query(model.Tweet)[rand_key]
 
-    return tweet.text
+    tweet_to_return = {}
+    tweet_to_return['text'] = tweet.text
+    tweet_to_return['latitude'] = tweet.latitude
+    tweet_to_return['longitude'] = tweet.longitude
+
+    return jsonify(tweet_to_return)
 
 
 if __name__ == "__main__":

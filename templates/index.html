@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <style>
+            #map {
+                height: 80%;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+
+        <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>
+            function initialize() {
+                var mapOptions = {
+                    center: { lat: 37.7833, lng: -122.4167},
+                    zoom: 2
+                };
+
+                var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+                $("#get-tweet").on('click', getTweet);
+            }
+
+            google.maps.event.addDomListener(window, 'load', initialize)
+
+            function getTweet() {
+                console.log("check");
+
+            }
+
+        </script>
+
+        <div id="map"></div>
+        <div>
+            <!-- <form action="/get-tweet"> -->
+                <button id="get-tweet">Get Tweet</button>
+            <!-- </form> -->
+        </div>
+        <div id="temp-input">
+        </div>
+
+    </body>
+</html>

@@ -6,6 +6,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import scoped_session
 from sqlalchemy import ForeignKey
 from app import app
+from datetime import datetime
 import os
 import re
 
@@ -43,6 +44,11 @@ class Tweet(db.Model):
             self.tag = 'seahawks'
         pass
 
+    def add_date(self, twitter_date):
+        date = datetime.strptime(twitter_date, '%a %b %d %H:%M:%S +0000 %Y')
+        self.date = date.strftime('%B %d, %Y')
+        self.time = date.strftime('%H:%M:%S')
+
 
 
 def new_tweet(data):
@@ -52,6 +58,7 @@ def new_tweet(data):
         new_tweet.longitude = float(data['coordinates']['coordinates'][0])
         
         new_tweet.add_tags(data['text'])
+        new_tweet.add_date(data['created_at'])
 
 
         session.add(new_tweet)

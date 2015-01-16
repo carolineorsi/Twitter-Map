@@ -28,8 +28,24 @@ def get_tweet():
     tweet_to_return['text'] = tweet.text
     tweet_to_return['latitude'] = tweet.latitude
     tweet_to_return['longitude'] = tweet.longitude
+    tweet_to_return['tag'] = tweet.tag
 
     return jsonify(tweet_to_return)
+
+# @app.route("/get-tweet")
+# def get_tweet():
+#     tweets = model.session.query(model.Tweet).all()
+#     tweets_to_return = []
+
+#     for tweet in tweets:
+#         tweet_to_return = {}
+#         tweet_to_return['text'] = tweet.text
+#         tweet_to_return['latitude'] = tweet.latitude
+#         tweet_to_return['longitude'] = tweet.longitude
+#         tweet_to_return['tag'] = tweet.tag
+#         tweets_to_return.append(tweet_to_return)
+
+#     return jsonify(tweets_to_return)
 
 
 if __name__ == "__main__":

@@ -35,19 +35,32 @@
                     '/get-tweet',
                     function(response) {
                         console.log(response);
-                        addMarker(response.latitude, response.longitude, response.text);
+                        addMarker(response.latitude, response.longitude, response.text, response.tag);
                     }
                 );
             }
 
-            function addMarker(lat, lng, text) {
+            function addMarker(lat, lng, text, tag) {
                 var latlng = new google.maps.LatLng(lat, lng);
-                console.log(latlng);
 
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map
                 });
+
+                if (tag === "packers") {
+                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-circle-lv.png')
+                }
+                else if (tag === "seahawks") {
+                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png')
+                }
+                else if (tag === "colts") {
+                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/wht-circle-lv.png')
+                }
+                else if (tag === "patriots") {
+                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
+                }
+
 
                 map.setCenter(latlng);
 

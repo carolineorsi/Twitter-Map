@@ -27,8 +27,7 @@
         <div>
             <button id="get-tweet">Get Tweets</button>
         </div>
-        <div id="temp-input">
-        </div>
+        <div id="timer"></div>
 
         <script>
 
@@ -77,10 +76,25 @@
 
             };
 
+            function startTimer() {
+                var clock = new Date();
+                clock.setHours(08);
+                clock.setMinutes(23);
+                clock.setSeconds(30);
+                $("#timer").text(clock.toString());
+
+                setInterval(function() {
+                    clock.setSeconds(clock.getSeconds() + 1000);
+                    $("#timer").text(clock.toString());
+                }, 1000);
+
+            }
+
             function getTweet() {
                 $.get(
                     '/get-tweet',
                     function(response) {
+                        startTimer();
 
                         _.each(response.data, function(tweet) {
                             // console.log(tweet.time)

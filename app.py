@@ -42,7 +42,7 @@ def get_tweet():
         tweet_to_return['longitude'] = tweet.longitude
         tweet_to_return['color'] = pick_color(tweet.tag)
 
-        if tweet.date and tweet.time:
+        if tweet.date and tweet.time and tweet.tag:
             timestamp = datetime.combine(tweet.date, tweet.time)
             tweet_to_return['time'] = int(timestamp.strftime('%s')) - 1421454200
 
@@ -54,13 +54,13 @@ def get_tweet():
 
 def pick_color(tag):
     if tag == 'packers':
-        return '#0f0'
+        return '#7A9F31'
     elif tag == 'patriots':
-        return '#f00'
+        return '#c80815'
     elif tag == 'seahawks':
-        return '#00f'
+        return '#133579'
     elif tag == 'colts':
-        return '#666'
+        return '#000000'
     else:
         return '#fff'
 

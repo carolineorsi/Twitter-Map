@@ -49,19 +49,32 @@
                 // }).addTo(map);
 
                 var circle = L.circleMarker([lat, lng], {
+                    color: color,
                     fillColor: color,
-                    opacity: 0.0,
+                    opacity: 0.1,
                     fillOpacity: 1.0,
                     weight: 2,
                     radius: 5,
                 }).addTo(map);
 
-                setTimeout(function() {
+                var opacity = 1.0
+                var radius = 5
+
+                var burst = setInterval(function() {
+                    opacity = opacity - 0.1;
+                    radius ++;
+
                     circle.setStyle({
-                        fillOpacity: 0.2,
-                        radius: 10,
+                        fillOpacity: opacity,
+                        radius: radius,
                     });
-                }, 200);
+                }, 100);
+
+                setTimeout(function () {
+                    clearInterval(burst);
+                }, 1000);
+
+
             };
 
             function getTweet() {

@@ -12,7 +12,7 @@
             }
 
             #map {
-                height: 90%;
+                height: 100%;
                 width: 100%;
             }
 
@@ -21,9 +21,15 @@
                 margin-top: 5px;
             }
 
+            #button {
+                position: absolute;
+                left: 10px;
+                bottom: 10px;
+            }
+
             #timer {
                 position: absolute;
-                left: 50px;
+                right: 20px;
                 top: 20px;
                 z-index: 10;
                 background-color: white;
@@ -33,13 +39,13 @@
                 font-size: 20px;
                 box-shadow: 2px 2px 2px #888;
                 border-radius: 10px;
-                background-color: orange;
+                background-color: #FFCC00;
             }
         </style>
     </head>
     <body>
         <div id="map"></div>
-        <div>
+        <div id="button">
             <button id="get-tweet">Get Tweets</button>
         </div>
         <div id="timer">8:23:30 AM</div>
@@ -50,17 +56,10 @@
 
             L.mapbox.accessToken = 'pk.eyJ1IjoiY2Fyb2xpbmVvcnNpIiwiYSI6ImJYQW4tLUkifQ.-h-le0HORavJ6JSMiafpQQ';
             map = L.mapbox.map('map', 'carolineorsi.kp9bed2n')
-                .setView([39.0997, -94.5783], 4);
+                .setView([38.255, -96.548], 5);
 
 
             function addMarker(lat, lng, color) {
-
-                // L.marker([lat, lng], {
-                //     icon: L.mapbox.marker.icon({
-                //         'marker-size': 'small',
-                //         'marker-color': color
-                //     })
-                // }).addTo(map);
 
                 var circle = L.circleMarker([lat, lng], {
                     color: color,
@@ -98,18 +97,23 @@
                 clock.setSeconds(30);
                 $("#timer").text(clock.toLocaleTimeString());
 
-                setInterval(function() {
+                var timer = setInterval(function() {
                     clock.setSeconds(clock.getSeconds() + 1000);
                     $("#timer").text(clock.toLocaleTimeString());
                 }, 1000);
 
+                function stopTimer() {
+                    clearInterval(timer);
+                }
+
+                return stopTimer;
             }
 
             function getTweet() {
                 $.get(
                     '/get-tweet',
                     function(response) {
-                        startTimer();
+                        var stopClock = startTimer();
 
                         _.each(response.data, function(tweet) {
                             // console.log(tweet.time)
@@ -118,6 +122,7 @@
                             }, tweet.time);
                         }
                         );
+                        setTimeout(stopClock, 15000);
                     }
                 );
             }

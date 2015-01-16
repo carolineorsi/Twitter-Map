@@ -1,6 +1,16 @@
 <html>
     <head>
+        <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.js'></script>
+        <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="/static/js/underscore.js"></script>
+        <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.4/mapbox.css' rel='stylesheet' />
         <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
             #map {
                 height: 90%;
                 width: 100%;
@@ -13,23 +23,42 @@
         </style>
     </head>
     <body>
+        <div id="map"></div>
+        <div>
+            <button id="get-tweet">Get Tweets</button>
+        </div>
+        <div id="temp-input">
+        </div>
 
-        <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="/static/js/underscore.js"></script>
         <script>
-            function initialize() {
-                var mapOptions = {
-                    center: { lat: 39.0997, lng: -94.5783},
-                    zoom: 4
-                };
+            // function initialize() {
+            //     var mapOptions = {
+            //         center: { lat: 39.0997, lng: -94.5783},
+            //         zoom: 4
+            //     };
 
-                map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            //     map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
                 $("#get-tweet").on('click', getTweet);
-            }
+            // }
 
-            google.maps.event.addDomListener(window, 'load', initialize)
+            // google.maps.event.addDomListener(window, 'load', initialize)
+
+            L.mapbox.accessToken = 'pk.eyJ1IjoiY2Fyb2xpbmVvcnNpIiwiYSI6ImJYQW4tLUkifQ.-h-le0HORavJ6JSMiafpQQ';
+            map = L.mapbox.map('map', 'examples.map-i86nkdio')
+                .setView([39.0997, -94.5783], 4);
+
+
+            function addMarker(lat, lng, color) {
+
+                L.marker([lat, lng], {
+                    icon: L.mapbox.marker.icon({
+                        'marker-size': 'small',
+                        'marker-color': color
+                    })
+                }).addTo(map);
+
+            };
 
             function getTweet() {
                 $.get(
@@ -40,7 +69,7 @@
                         _.each(response.data, function(tweet) {
                             // console.log(tweet.time)
                             setTimeout(function() {
-                                addMarker(tweet.latitude, tweet.longitude, tweet.text, tweet.tag);
+                                addMarker(tweet.latitude, tweet.longitude, tweet.color);
                             }, tweet.time);
                         }
                         );
@@ -48,53 +77,46 @@
                 );
             }
 
-            function addMarker(lat, lng, text, tag) {
-                var latlng = new google.maps.LatLng(lat, lng);
+            // function addMarker(lat, lng, text, tag) {
+            //     var latlng = new google.maps.LatLng(lat, lng);
 
-                var marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map
-                });
+            //     var marker = new google.maps.Marker({
+            //         position: latlng,
+            //         map: map
+            //     });
 
-                if (tag === "packers") {
-                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-circle-lv.png')
-                }
-                else if (tag === "seahawks") {
-                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png')
-                }
-                else if (tag === "colts") {
-                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/wht-circle-lv.png')
-                }
-                // else if (tag === "patriots") {
-                //     marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
-                // }
-                else {
-                    marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
-                }
+            //     if (tag === "packers") {
+            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-circle-lv.png')
+            //     }
+            //     else if (tag === "seahawks") {
+            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png')
+            //     }
+            //     else if (tag === "colts") {
+            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/wht-circle-lv.png')
+            //     }
+            //     // else if (tag === "patriots") {
+            //     //     marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
+            //     // }
+            //     else {
+            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
+            //     }
 
 
-                // map.setCenter(latlng);
+            //     // map.setCenter(latlng);
 
-                var contentString = text;
+            //     var contentString = text;
 
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                })
+            //     var infowindow = new google.maps.InfoWindow({
+            //         content: contentString
+            //     })
 
-                // infowindow.open(map, marker);
-                // setTimeout(function() {
-                //     infowindow.close();
-                // }, 5000);
-            }
+            //     // infowindow.open(map, marker);
+            //     // setTimeout(function() {
+            //     //     infowindow.close();
+            //     // }, 5000);
+            // }
 
         </script>
-
-        <div id="map"></div>
-        <div>
-            <button id="get-tweet">Get Tweets</button>
-        </div>
-        <div id="temp-input">
-        </div>
 
     </body>
 </html>

@@ -40,7 +40,7 @@ def get_tweet():
         tweet_to_return['text'] = tweet.text
         tweet_to_return['latitude'] = tweet.latitude
         tweet_to_return['longitude'] = tweet.longitude
-        tweet_to_return['tag'] = tweet.tag
+        tweet_to_return['color'] = pick_color(tweet.tag)
 
         if tweet.date and tweet.time:
             timestamp = datetime.combine(tweet.date, tweet.time)
@@ -51,6 +51,18 @@ def get_tweet():
     response = {'data': tweets_to_return}
 
     return jsonify(response)
+
+def pick_color(tag):
+    if tag == 'packers':
+        return '#0f0'
+    elif tag == 'patriots':
+        return '#f00'
+    elif tag == 'seahawks':
+        return '#00f'
+    elif tag == 'colts':
+        return '#888'
+    else:
+        return '#fff'
 
 
 if __name__ == "__main__":

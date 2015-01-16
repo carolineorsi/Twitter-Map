@@ -20,7 +20,7 @@
         <script>
             function initialize() {
                 var mapOptions = {
-                    center: { lat: 37.7833, lng: -122.4167},
+                    center: { lat: 39.0997, lng: -94.5783},
                     zoom: 4
                 };
 
@@ -38,8 +38,10 @@
                         // console.log(response);
 
                         _.each(response.data, function(tweet) {
-                            console.log(tweet.text)
-                            addMarker(tweet.latitude, tweet.longitude, tweet.text, tweet.tag);
+                            // console.log(tweet.time)
+                            setTimeout(function() {
+                                addMarker(tweet.latitude, tweet.longitude, tweet.text, tweet.tag);
+                            }, tweet.time);
                         }
                         );
                     }
@@ -71,7 +73,7 @@
                 }
 
 
-                map.setCenter(latlng);
+                // map.setCenter(latlng);
 
                 var contentString = text;
 
@@ -89,7 +91,7 @@
 
         <div id="map"></div>
         <div>
-            <button id="get-tweet">Get Tweet</button>
+            <button id="get-tweet">Get Tweets</button>
         </div>
         <div id="temp-input">
         </div>

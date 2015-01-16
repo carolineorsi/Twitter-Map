@@ -3,6 +3,7 @@ from flask import Flask, request, render_template, redirect, url_for, jsonify
 import model
 import random
 import json
+from datetime import datetime
 
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
 
@@ -24,13 +25,10 @@ def index():
 #     rand_key = random.randrange(1, model.session.query(model.Tweet).count())
 #     tweet = model.session.query(model.Tweet)[rand_key]
 
-#     tweet_to_return = {}
-#     tweet_to_return['text'] = tweet.text
-#     tweet_to_return['latitude'] = tweet.latitude
-#     tweet_to_return['longitude'] = tweet.longitude
-#     tweet_to_return['tag'] = tweet.tag
+#     timestamp = datetime.combine(tweet.date, tweet.time)
+#     print int(timestamp.strftime('%s')) - 1421395200
 
-#     return jsonify(tweet_to_return)
+#     return "success"
 
 @app.route("/get-tweet")
 def get_tweet():
@@ -43,7 +41,12 @@ def get_tweet():
         tweet_to_return['latitude'] = tweet.latitude
         tweet_to_return['longitude'] = tweet.longitude
         tweet_to_return['tag'] = tweet.tag
-        tweets_to_return.append(tweet_to_return)
+
+        if tweet.date and tweet.time:
+            timestamp = datetime.combine(tweet.date, tweet.time)
+            tweet_to_return['time'] = int(timestamp.strftime('%s')) - 1421454200
+
+            tweets_to_return.append(tweet_to_return)
 
     response = {'data': tweets_to_return}
 

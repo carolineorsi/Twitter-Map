@@ -16,6 +16,7 @@
 
         <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="/static/js/underscore.js"></script>
         <script>
             function initialize() {
                 var mapOptions = {
@@ -34,8 +35,13 @@
                 $.get(
                     '/get-tweet',
                     function(response) {
-                        console.log(response);
-                        addMarker(response.latitude, response.longitude, response.text, response.tag);
+                        // console.log(response);
+
+                        _.each(response.data, function(tweet) {
+                            console.log(tweet.text)
+                            addMarker(tweet.latitude, tweet.longitude, tweet.text, tweet.tag);
+                        }
+                        );
                     }
                 );
             }
@@ -57,7 +63,10 @@
                 else if (tag === "colts") {
                     marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/wht-circle-lv.png')
                 }
-                else if (tag === "patriots") {
+                // else if (tag === "patriots") {
+                //     marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
+                // }
+                else {
                     marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
                 }
 
@@ -70,10 +79,10 @@
                     content: contentString
                 })
 
-                infowindow.open(map, marker);
-                setTimeout(function() {
-                    infowindow.close();
-                }, 5000);
+                // infowindow.open(map, marker);
+                // setTimeout(function() {
+                //     infowindow.close();
+                // }, 5000);
             }
 
         </script>

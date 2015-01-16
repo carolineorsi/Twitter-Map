@@ -19,33 +19,35 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/get-tweet")
-def get_tweet():
-    rand_key = random.randrange(1, model.session.query(model.Tweet).count())
-    tweet = model.session.query(model.Tweet)[rand_key]
-
-    tweet_to_return = {}
-    tweet_to_return['text'] = tweet.text
-    tweet_to_return['latitude'] = tweet.latitude
-    tweet_to_return['longitude'] = tweet.longitude
-    tweet_to_return['tag'] = tweet.tag
-
-    return jsonify(tweet_to_return)
-
 # @app.route("/get-tweet")
 # def get_tweet():
-#     tweets = model.session.query(model.Tweet).all()
-#     tweets_to_return = []
+#     rand_key = random.randrange(1, model.session.query(model.Tweet).count())
+#     tweet = model.session.query(model.Tweet)[rand_key]
 
-#     for tweet in tweets:
-#         tweet_to_return = {}
-#         tweet_to_return['text'] = tweet.text
-#         tweet_to_return['latitude'] = tweet.latitude
-#         tweet_to_return['longitude'] = tweet.longitude
-#         tweet_to_return['tag'] = tweet.tag
-#         tweets_to_return.append(tweet_to_return)
+#     tweet_to_return = {}
+#     tweet_to_return['text'] = tweet.text
+#     tweet_to_return['latitude'] = tweet.latitude
+#     tweet_to_return['longitude'] = tweet.longitude
+#     tweet_to_return['tag'] = tweet.tag
 
-#     return jsonify(tweets_to_return)
+#     return jsonify(tweet_to_return)
+
+@app.route("/get-tweet")
+def get_tweet():
+    tweets = model.session.query(model.Tweet).all()
+    tweets_to_return = []
+
+    for tweet in tweets:
+        tweet_to_return = {}
+        tweet_to_return['text'] = tweet.text
+        tweet_to_return['latitude'] = tweet.latitude
+        tweet_to_return['longitude'] = tweet.longitude
+        tweet_to_return['tag'] = tweet.tag
+        tweets_to_return.append(tweet_to_return)
+
+    response = {'data': tweets_to_return}
+
+    return jsonify(response)
 
 
 if __name__ == "__main__":

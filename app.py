@@ -60,7 +60,7 @@ def pick_color(tag):
     elif tag == 'seahawks':
         return '#00f'
     elif tag == 'colts':
-        return '#888'
+        return '#666'
     else:
         return '#fff'
 

@@ -31,40 +31,43 @@
         </div>
 
         <script>
-            // function initialize() {
-            //     var mapOptions = {
-            //         center: { lat: 39.0997, lng: -94.5783},
-            //         zoom: 4
-            //     };
 
-            //     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-                $("#get-tweet").on('click', getTweet);
-            // }
-
-            // google.maps.event.addDomListener(window, 'load', initialize)
+            $("#get-tweet").on('click', getTweet);
 
             L.mapbox.accessToken = 'pk.eyJ1IjoiY2Fyb2xpbmVvcnNpIiwiYSI6ImJYQW4tLUkifQ.-h-le0HORavJ6JSMiafpQQ';
-            map = L.mapbox.map('map', 'examples.map-i86nkdio')
+            map = L.mapbox.map('map', 'carolineorsi.kp9bed2n')
                 .setView([39.0997, -94.5783], 4);
 
 
             function addMarker(lat, lng, color) {
 
-                L.marker([lat, lng], {
-                    icon: L.mapbox.marker.icon({
-                        'marker-size': 'small',
-                        'marker-color': color
-                    })
+                // L.marker([lat, lng], {
+                //     icon: L.mapbox.marker.icon({
+                //         'marker-size': 'small',
+                //         'marker-color': color
+                //     })
+                // }).addTo(map);
+
+                var circle = L.circleMarker([lat, lng], {
+                    fillColor: color,
+                    opacity: 0.0,
+                    fillOpacity: 1.0,
+                    weight: 2,
+                    radius: 5,
                 }).addTo(map);
 
+                setTimeout(function() {
+                    circle.setStyle({
+                        fillOpacity: 0.2,
+                        radius: 10,
+                    });
+                }, 200);
             };
 
             function getTweet() {
                 $.get(
                     '/get-tweet',
                     function(response) {
-                        // console.log(response);
 
                         _.each(response.data, function(tweet) {
                             // console.log(tweet.time)
@@ -76,45 +79,6 @@
                     }
                 );
             }
-
-            // function addMarker(lat, lng, text, tag) {
-            //     var latlng = new google.maps.LatLng(lat, lng);
-
-            //     var marker = new google.maps.Marker({
-            //         position: latlng,
-            //         map: map
-            //     });
-
-            //     if (tag === "packers") {
-            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/grn-circle-lv.png')
-            //     }
-            //     else if (tag === "seahawks") {
-            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/blu-circle-lv.png')
-            //     }
-            //     else if (tag === "colts") {
-            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/wht-circle-lv.png')
-            //     }
-            //     // else if (tag === "patriots") {
-            //     //     marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
-            //     // }
-            //     else {
-            //         marker.setIcon('http://maps.google.com/mapfiles/kml/paddle/red-circle-lv.png')
-            //     }
-
-
-            //     // map.setCenter(latlng);
-
-            //     var contentString = text;
-
-            //     var infowindow = new google.maps.InfoWindow({
-            //         content: contentString
-            //     })
-
-            //     // infowindow.open(map, marker);
-            //     // setTimeout(function() {
-            //     //     infowindow.close();
-            //     // }, 5000);
-            // }
 
         </script>
 

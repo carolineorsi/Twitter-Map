@@ -2,8 +2,13 @@
     <head>
         <style>
             #map {
-                height: 80%;
+                height: 90%;
                 width: 100%;
+            }
+
+            #get-tweet {
+                font-size: 20;
+                margin-top: 5px;
             }
         </style>
     </head>
@@ -15,10 +20,10 @@
             function initialize() {
                 var mapOptions = {
                     center: { lat: 37.7833, lng: -122.4167},
-                    zoom: 2
+                    zoom: 4
                 };
 
-                var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
                 $("#get-tweet").on('click', getTweet);
             }
@@ -29,9 +34,33 @@
                 $.get(
                     '/get-tweet',
                     function(response) {
-                        console.log(response)
+                        console.log(response);
+                        addMarker(response.latitude, response.longitude, response.text);
                     }
                 );
+            }
+
+            function addMarker(lat, lng, text) {
+                var latlng = new google.maps.LatLng(lat, lng);
+                console.log(latlng);
+
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map
+                });
+
+                map.setCenter(latlng);
+
+                var contentString = text;
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                })
+
+                infowindow.open(map, marker);
+                setTimeout(function() {
+                    infowindow.close();
+                }, 5000);
             }
 
         </script>

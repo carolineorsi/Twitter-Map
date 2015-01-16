@@ -1,12 +1,13 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, Text, Float, and_, or_
+from sqlalchemy import Column, Integer, Text, Float, String, Date, Time, and_, or_
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import scoped_session
 from sqlalchemy import ForeignKey
 from app import app
 import os
+import re
 
 db = SQLAlchemy(app)
 
@@ -27,6 +28,34 @@ class Tweet(db.Model):
     text = Column(Text)
     latitude = Column(Float)
     longitude = Column(Float)
+    date = Column(Date)
+    time = Column(Time)
+    tag = Column(String(32))
+
+    def add_tags(self, text):
+        if 'packers' in text.lower():
+            self.tag = 'packers'
+        elif 'colts' in text.lower():
+            self.tag = 'colts'
+        elif 'patriots' in text.lower():
+            self.tag = 'patriots'
+        elif 'seahawks' in text.lower():
+            self.tag = 'seahawks'
+        pass
+
+
+
+def new_tweet(data):
+        new_tweet = Tweet()
+        new_tweet.text = data['text']
+        new_tweet.latitude = float(data['coordinates']['coordinates'][1])
+        new_tweet.longitude = float(data['coordinates']['coordinates'][0])
+        
+        new_tweet.add_tags(data['text'])
+
+
+        session.add(new_tweet)
+        session.commit()
 
 
 def connect():

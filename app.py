@@ -20,23 +20,48 @@ def index():
     return render_template("index.html")
 
 
+# @app.route("/get-tweet")
+# def get_tweet():
+#     tweets = model.session.query(model.Tweet).all()
+#     tweets_to_return = []
+
+#     for tweet in tweets:
+#         tweet_to_return = {}
+#         tweet_to_return['text'] = tweet.text
+#         tweet_to_return['latitude'] = tweet.latitude
+#         tweet_to_return['longitude'] = tweet.longitude
+#         tweet_to_return['color'] = pick_color(tweet.tag)
+
+#         if tweet.date and tweet.time and tweet.tag:
+#             timestamp = datetime.combine(tweet.date, tweet.time)
+#             tweet_to_return['time'] = int(timestamp.strftime('%s')) - 1421454200
+
+#             tweets_to_return.append(tweet_to_return)
+
+#     response = {'data': tweets_to_return}
+
+#     return jsonify(response)
+
+
 @app.route("/get-tweet")
 def get_tweet():
-    tweets = model.session.query(model.Tweet).all()
     tweets_to_return = []
+    tags = model.session.query(model.Tag).all()
 
-    for tweet in tweets:
-        tweet_to_return = {}
-        tweet_to_return['text'] = tweet.text
-        tweet_to_return['latitude'] = tweet.latitude
-        tweet_to_return['longitude'] = tweet.longitude
-        tweet_to_return['color'] = pick_color(tweet.tag)
+    for tag in tags:
+        tweets = model.session.query(model.Tweet).filter_by(id=tag.tweet_id).all()
+        for tweet in tweets:
+            tweet_to_return = {}
+            tweet_to_return['text'] = tweet.text
+            tweet_to_return['latitude'] = tweet.latitude
+            tweet_to_return['longitude'] = tweet.longitude
+            tweet_to_return['color'] = pick_color(tag.tag)
 
-        if tweet.date and tweet.time and tweet.tag:
-            timestamp = datetime.combine(tweet.date, tweet.time)
-            tweet_to_return['time'] = int(timestamp.strftime('%s')) - 1421454200
+            if tweet.date and tweet.time:
+                timestamp = datetime.combine(tweet.date, tweet.time)
+                tweet_to_return['time'] = int(timestamp.strftime('%s')) - 1421541000
 
-            tweets_to_return.append(tweet_to_return)
+                tweets_to_return.append(tweet_to_return)
 
     response = {'data': tweets_to_return}
 
@@ -58,6 +83,7 @@ def random_tweet():
 
 
 def pick_color(tag):
+    #TODO: move this to JavaScript
     color_dict = {'packers': '#7A9F31',
                   'patriots': '#C80815',
                   'seahawks': '#133579',

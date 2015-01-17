@@ -20,16 +20,6 @@ def index():
     return render_template("index.html")
 
 
-# @app.route("/get-tweet")
-# def get_tweet():
-#     rand_key = random.randrange(1, model.session.query(model.Tweet).count())
-#     tweet = model.session.query(model.Tweet)[rand_key]
-
-#     timestamp = datetime.combine(tweet.date, tweet.time)
-#     print int(timestamp.strftime('%s')) - 1421395200
-
-#     return "success"
-
 @app.route("/get-tweet")
 def get_tweet():
     tweets = model.session.query(model.Tweet).all()

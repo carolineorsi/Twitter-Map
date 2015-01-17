@@ -31,18 +31,27 @@ class Tweet(db.Model):
     longitude = Column(Float)
     date = Column(Date)
     time = Column(Time)
-    tag = Column(String(32))
+
 
     def add_tags(self, text):
         if 'packers' in text.lower():
-            self.tag = 'packers'
-        elif 'colts' in text.lower():
-            self.tag = 'colts'
-        elif 'patriots' in text.lower():
-            self.tag = 'patriots'
-        elif 'seahawks' in text.lower():
-            self.tag = 'seahawks'
-        pass
+            self.new_tag('packers')
+        if 'colts' in text.lower():
+            self.new_tag('colts')
+        if 'patriots' in text.lower():
+            self.new_tag('patriots')
+        if 'seahawks' in text.lower():
+            self.new_tag('seahawks')
+
+
+    def new_tag(self, tag):
+        new_tag = Tag()
+        new_tag.tweet_id = self.id
+        new_tag.tag = tag
+
+        session.add(new_tag)
+        session.commit()
+
 
     def add_date(self, twitter_date):
         date = datetime.strptime(twitter_date, '%a %b %d %H:%M:%S +0000 %Y')
@@ -50,19 +59,30 @@ class Tweet(db.Model):
         self.time = date.strftime('%H:%M:%S')
 
 
+class Tag(db.Model):
+    __tablename__ = "tag"
+
+    id = Column(Integer, primary_key=True)
+    tweet_id = Column(Integer, ForeignKey('tweet.id'))
+    tag = Column(String(30))
+
+    tweet = relationship("Tweet", backref=backref("tags", order_by=id))
+
+
 
 def new_tweet(data):
-        new_tweet = Tweet()
-        new_tweet.text = data['text']
-        new_tweet.latitude = float(data['coordinates']['coordinates'][1])
-        new_tweet.longitude = float(data['coordinates']['coordinates'][0])
-        
-        new_tweet.add_tags(data['text'])
-        new_tweet.add_date(data['created_at'])
+    new_tweet = Tweet()
+    new_tweet.text = data['text']
+    new_tweet.latitude = float(data['coordinates']['coordinates'][1])
+    new_tweet.longitude = float(data['coordinates']['coordinates'][0])
+    
+    new_tweet.add_date(data['created_at'])
 
+    session.add(new_tweet)
+    session.commit()
 
-        session.add(new_tweet)
-        session.commit()
+    new_tweet.add_tags(data['text'])
+
 
 
 def connect():

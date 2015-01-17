@@ -29,7 +29,7 @@
                 font-family: sans-serif;
             }
 
-            #button {
+            #buttons {
                 position: absolute;
                 left: 10px;
                 bottom: 10px;
@@ -47,15 +47,15 @@
                 font-size: 20px;
                 box-shadow: 2px 2px 2px #888;
                 border-radius: 10px;
-                background-color: #FFCC00;
+                background-color: #AAAAAA;
             }
         </style>
     </head>
     <body>
         <div id="map"></div>
-        <div id="button">
+        <div id="buttons">
             <button id="get-tweet" class="button">Get Tweets</button>
-            <button id="random-tweet" class="button">Random Tweet</button>
+            <button id="random-tweet" class="button" disabled>Random Tweet</button>
         </div>
         <div id="timer">8:23:30 AM</div>
         <div id="legend">
@@ -164,7 +164,10 @@
                             }, tweet.time);
                         }
                         );
-                        setTimeout(stopClock, 15000);
+                        setTimeout(function() {
+                            stopClock();
+                            $("#random-tweet").prop('disabled', false);
+                        }, 15000);
                     }
                 );
             }

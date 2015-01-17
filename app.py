@@ -52,6 +52,21 @@ def get_tweet():
 
     return jsonify(response)
 
+
+@app.route("/random-tweet")
+def random_tweet():
+    rand_key = random.randrange(1, model.session.query(model.Tweet).count())
+    tweet = model.session.query(model.Tweet)[rand_key]
+
+    tweet_to_return = {}
+    tweet_to_return['text'] = tweet.text
+    tweet_to_return['latitude'] = tweet.latitude
+    tweet_to_return['longitude'] = tweet.longitude
+    tweet_to_return['tag'] = tweet.tag
+
+    return jsonify(tweet_to_return)
+
+
 def pick_color(tag):
     if tag == 'packers':
         return '#7A9F31'

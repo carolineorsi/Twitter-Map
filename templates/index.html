@@ -16,7 +16,7 @@
                 width: 100%;
             }
 
-            #get-tweet {
+            .button {
                 font-size: 20;
                 margin-top: 5px;
             }
@@ -46,13 +46,15 @@
     <body>
         <div id="map"></div>
         <div id="button">
-            <button id="get-tweet">Get Tweets</button>
+            <button id="get-tweet" class="button">Get Tweets</button>
+            <button id="random-tweet" class="button">Random Tweet</button>
         </div>
         <div id="timer">8:23:30 AM</div>
 
         <script>
 
             $("#get-tweet").on('click', getTweet);
+            $("#random-tweet").on('click', getRandom);
 
             L.mapbox.accessToken = 'pk.eyJ1IjoiY2Fyb2xpbmVvcnNpIiwiYSI6ImJYQW4tLUkifQ.-h-le0HORavJ6JSMiafpQQ';
             map = L.mapbox.map('map', 'carolineorsi.kp9bed2n')
@@ -86,9 +88,15 @@
                 setTimeout(function () {
                     clearInterval(burst);
                 }, 1000);
-
-
             };
+
+            function showPopup(lat, lng, text) {
+                var popup = L.popup()
+                    .setLatLng([lat, lng])
+                    .setContent(text)
+                    .openOn(map);
+            };
+
 
             function startTimer() {
                 var clock = new Date();
@@ -125,6 +133,16 @@
                         setTimeout(stopClock, 15000);
                     }
                 );
+            }
+
+            function getRandom() {
+                
+                $.get('/random-tweet',
+                function(response) {
+                    showPopup(response.latitude, response.longitude, response.text);
+                }
+                );
+
             }
 
         </script>

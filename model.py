@@ -34,14 +34,16 @@ class Tweet(db.Model):
 
 
     def add_tags(self, text):
-        if 'packers' in text.lower():
-            self.new_tag('packers')
-        if 'colts' in text.lower():
-            self.new_tag('colts')
-        if 'patriots' in text.lower():
-            self.new_tag('patriots')
-        if 'seahawks' in text.lower():
-            self.new_tag('seahawks')
+        tags_dict = {'packers': ['packers', 'green bay', 'wisconsin', 'the pack', 'cheeseheads', 'rodgers', 'mccarthy', 'crosby'],
+                     'colts': ['colts', 'indianapolis', 'indy', 'luck', 'pagano', 'vinatieri'],
+                     'patriots': ['patriots', 'pats', 'new england', 'brady', 'gronk', 'belichick', 'gustowski'],
+                     'seahawks': ['seahawks', 'hawks', 'seattle', 'wilson', 'sherman', 'carroll', 'hauschka']}
+
+        for team, tags in tags_dict.iteritems():
+            for tag in tags:
+                if tag in text.lower():
+                    self.new_tag(team)
+                    break
 
 
     def new_tag(self, tag):

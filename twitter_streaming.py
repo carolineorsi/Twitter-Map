@@ -31,3 +31,4 @@ if __name__ == '__main__':
     stream = Stream(auth, listener)
 
     stream.filter(track=['packers', 'colts', 'patriots', 'seahawks'])
+    #add tags: nfl, 

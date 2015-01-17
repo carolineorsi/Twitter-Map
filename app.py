@@ -58,16 +58,12 @@ def random_tweet():
 
 
 def pick_color(tag):
-    if tag == 'packers':
-        return '#7A9F31'
-    elif tag == 'patriots':
-        return '#c80815'
-    elif tag == 'seahawks':
-        return '#133579'
-    elif tag == 'colts':
-        return '#000000'
-    else:
-        return '#fff'
+    color_dict = {'packers': '#7A9F31',
+                  'patriots': '#C80815',
+                  'seahawks': '#133579',
+                  'colts': '#000000'}
+
+    return color_dict[tag]
 
 
 if __name__ == "__main__":

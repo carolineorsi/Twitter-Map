@@ -46,7 +46,8 @@ def index():
 @app.route("/get-tweet")
 def get_tweet():
     tweets_to_return = []
-    tags = model.session.query(model.Tag).all()
+    # tags = model.session.query(model.Tag).all()
+    tags = model.session.query(model.Tag).filter_by(tag='seahawks').all()
 
     for tag in tags:
         tweets = model.session.query(model.Tweet).filter_by(id=tag.tweet_id).all()
@@ -57,9 +58,11 @@ def get_tweet():
             tweet_to_return['longitude'] = tweet.longitude
             tweet_to_return['color'] = pick_color(tag.tag)
 
-            if tweet.date and tweet.time:
-                timestamp = datetime.combine(tweet.date, tweet.time)
-                tweet_to_return['time'] = int(timestamp.strftime('%s')) - 1421541000
+            timestamp = datetime.combine(tweet.date, tweet.time)
+            epoch_time = int(timestamp.strftime('%s'))
+
+            if epoch_time > 1421634600:
+                tweet_to_return['time'] = epoch_time - 1421634600
 
                 tweets_to_return.append(tweet_to_return)
 
@@ -77,7 +80,6 @@ def random_tweet():
     tweet_to_return['text'] = tweet.text
     tweet_to_return['latitude'] = tweet.latitude
     tweet_to_return['longitude'] = tweet.longitude
-    tweet_to_return['tag'] = tweet.tag
 
     return jsonify(tweet_to_return)
 

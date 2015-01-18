@@ -57,7 +57,7 @@
             <button id="get-tweet" class="button">Start</button>
             <button id="random-tweet" class="button" disabled>Random Tweet</button>
         </div>
-        <div id="timer">8:23:30 AM</div>
+        <div id="timer">9:55:00 PM</div>
         <div id="legend">
             <div>
                 <svg height="10" width="10">
@@ -134,9 +134,9 @@
 
             function startTimer() {
                 var clock = new Date();
-                clock.setHours(08);
-                clock.setMinutes(23);
-                clock.setSeconds(30);
+                clock.setHours(21);
+                clock.setMinutes(55);
+                clock.setSeconds(00);
                 $("#timer").text(clock.toLocaleTimeString());
 
                 var timer = setInterval(function() {
@@ -152,6 +152,7 @@
             }
 
             function getTweet() {
+                $("#get-tweet").prop('disabled', true)
                 $.get(
                     '/get-tweet',
                     function(response) {

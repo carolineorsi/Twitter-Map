@@ -45,9 +45,13 @@ def index():
 
 @app.route("/get-tweet")
 def get_tweet():
+    team1 = request.args.get('team1')
+    team2 = request.args.get('team2')
+    start_time = int(request.args.get('start_time'))
     tweets_to_return = []
     # tags = model.session.query(model.Tag).all()
-    tags = model.session.query(model.Tag).filter_by(tag='seahawks').all()
+    # tags = model.session.query(model.Tag).filter_by(tag='packers').all()
+    tags = model.session.query(model.Tag).filter(model.or_(model.Tag.tag==team1, model.Tag.tag==team2)).all()
 
     for tag in tags:
         tweets = model.session.query(model.Tweet).filter_by(id=tag.tweet_id).all()
@@ -61,8 +65,8 @@ def get_tweet():
             timestamp = datetime.combine(tweet.date, tweet.time)
             epoch_time = int(timestamp.strftime('%s'))
 
-            if epoch_time > 1421634600:
-                tweet_to_return['time'] = epoch_time - 1421634600
+            if epoch_time > start_time and epoch_time < start_time + 18000:
+                tweet_to_return['time'] = epoch_time - start_time
 
                 tweets_to_return.append(tweet_to_return)
 

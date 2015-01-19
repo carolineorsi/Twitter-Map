@@ -18,7 +18,8 @@ class StdOutListener(StreamListener):
         if data_dict.get('coordinates'):
             model.new_tweet(data_dict)
 
-            print data_dict['coordinates']['coordinates']
+            # print data_dict['coordinates']['coordinates']
+            print data_dict['text']
         return True
 
     def on_error(self, status):

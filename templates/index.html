@@ -54,7 +54,8 @@
     <body>
         <div id="map"></div>
         <div id="buttons">
-            <button id="get-tweet" class="button">Start</button>
+            <button id="get-seahawks-packers" class="get-tweet button">Seahawks-Packers</button>
+            <button id="get-patriots-colts" class="get-tweet button">Patriots-Colts</button>
             <button id="random-tweet" class="button" disabled>Random Tweet</button>
         </div>
         <div id="timer">9:55:00 PM</div>
@@ -87,7 +88,14 @@
 
         <script>
 
-            $("#get-tweet").on('click', getTweet);
+            $("#get-seahawks-packers").on('click', function() {
+                getTweet('packers', 'seahawks', 1421634600);
+            });
+
+            $("#get-patriots-colts").on('click', function() {
+                getTweet('patriots', 'colts', 1421649000);
+            });
+
             $("#random-tweet").on('click', getRandom);
 
             L.mapbox.accessToken = 'pk.eyJ1IjoiY2Fyb2xpbmVvcnNpIiwiYSI6ImJYQW4tLUkifQ.-h-le0HORavJ6JSMiafpQQ';
@@ -103,25 +111,32 @@
                     opacity: 0.1,
                     fillOpacity: 1.0,
                     weight: 2,
-                    radius: 5,
+                    radius: 3,
                 }).addTo(map);
 
                 var opacity = 1.0
-                var radius = 5
-
-                var burst = setInterval(function() {
-                    opacity = opacity - 0.1;
-                    radius ++;
-
-                    circle.setStyle({
-                        fillOpacity: opacity,
-                        radius: radius,
-                    });
-                }, 100);
+                var radius = 3
 
                 setTimeout(function () {
-                    clearInterval(burst);
+                    circle.setStyle({
+                        fillOpacity: 0.1,
+                        radius: 5
+                    });
                 }, 1000);
+
+                // var burst = setInterval(function() {
+                //     opacity = opacity - 0.1;
+                //     radius ++;
+
+                //     circle.setStyle({
+                //         fillOpacity: opacity,
+                //         radius: radius,
+                //     });
+                // }, 100);
+
+                // setTimeout(function () {
+                //     clearInterval(burst);
+                // }, 1100);
             };
 
             function showPopup(lat, lng, text) {
@@ -151,10 +166,11 @@
                 return stopTimer;
             }
 
-            function getTweet() {
-                $("#get-tweet").prop('disabled', true)
+            function getTweet(team1, team2, startTime) {
+                $(".get-tweet").prop('disabled', true)
                 $.get(
                     '/get-tweet',
+                    {team1: team1, team2: team2, start_time: startTime},
                     function(response) {
                         var stopClock = startTimer();
 

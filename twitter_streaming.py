@@ -43,4 +43,5 @@ if __name__ == '__main__':
                          'hawks', 'seattle', 'wilson', 'sherman', 
                          'carroll', 'hauschka', 'pats', 'new england', 'brady',
                          'gronk', 'belichick', 'gustowski', 'deflategate',
-                         'puppybowl', 'puppy bowl'])
+                         'puppybowl', 'puppy bowl', 'katy perry', 
+                         'missy elliott', 'lenny kravitz'])

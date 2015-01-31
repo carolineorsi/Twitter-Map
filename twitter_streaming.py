@@ -42,4 +42,5 @@ if __name__ == '__main__':
                          'esurance', 'kia', 'pizza hut', 'lucy bowl', 'toyota',
                          'hawks', 'seattle', 'wilson', 'sherman', 
                          'carroll', 'hauschka', 'pats', 'new england', 'brady',
-                         'gronk', 'belichick', 'gustowski', 'deflategate'])
+                         'gronk', 'belichick', 'gustowski', 'deflategate',
+                         'puppybowl', 'puppy bowl'])

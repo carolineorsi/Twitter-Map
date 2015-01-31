@@ -55,11 +55,13 @@ class Tweet(db.Model):
     #     session.add(new_tag)
     #     session.commit()
 
-    def add_media(self, entities):
+    def add_media(self, media):
         new_media = Media()
         new_media.tweet_id = self.id
-        new_media.type = entities['type']
-        new_media.url = entities['url']
+        new_media.media_type = media['type']
+        new_media.url = media['url']
+        new_media.start_index = media['indices'][0]
+        new_media.end_index = media['indices'][1]
 
         session.add(new_media)
         session.commit()
@@ -99,6 +101,9 @@ class Media(db.Model):
     tweet_id = Column(Integer, ForeignKey('tweets.id'))
     media_type = Column(String(64))
     url = Column(String(256))
+    start_index = Column(Integer)
+    end_index = Column(Integer)
+
 
     tweet = relationship("Tweet", backref=backref("media", order_by=id))
 
@@ -129,6 +134,7 @@ def new_tweet(data):
 
     if 'media' in data['entities']:
         for item in data['entities']['media']:
+            print item['type']
             new_tweet.add_media(item)
 
     if 'hashtags' in data['entities']:

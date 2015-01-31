@@ -56,7 +56,7 @@
         <div id="buttons">
             <button id="get-seahawks-packers" class="get-tweet button">Seahawks-Packers</button>
             <button id="get-patriots-colts" class="get-tweet button">Patriots-Colts</button>
-            <button id="random-tweet" class="button" disabled>Random Tweet</button>
+            <button id="random-tweet" class="button">Random Tweet</button>
         </div>
         <div id="timer">9:55:00 PM</div>
         <div id="legend">
@@ -140,10 +140,13 @@
                 }, 1100);
             };
 
-            function showPopup(lat, lng, text) {
+            function showPopup(lat, lng, text, media) {
+                content = text + "<br><img src='" + media + "'>"
+                console.log(content);
+
                 var popup = L.popup()
                     .setLatLng([lat, lng])
-                    .setContent(text)
+                    .setContent(content)
                     .openOn(map);
             };
 
@@ -194,7 +197,8 @@
                 
                 $.get('/random-tweet',
                 function(response) {
-                    showPopup(response.latitude, response.longitude, response.text);
+                    console.log(response.media)
+                    showPopup(response.latitude, response.longitude, response.text, response.media);
                 }
                 );
 

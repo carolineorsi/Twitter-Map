@@ -56,9 +56,14 @@ def random_tweet():
     tweet = model.session.query(model.Tweet)[rand_key]
 
     tweet_to_return = {}
-    tweet_to_return['text'] = tweet.text
+    tweet_to_return['text'] = tweet.tweet
     tweet_to_return['latitude'] = tweet.latitude
     tweet_to_return['longitude'] = tweet.longitude
+
+    if tweet.media:
+        for media in tweet.media:
+            tweet_to_return['media'] = media.url
+            print media
 
     return jsonify(tweet_to_return)
 

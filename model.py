@@ -59,7 +59,7 @@ class Tweet(db.Model):
         new_media = Media()
         new_media.tweet_id = self.id
         new_media.media_type = media['type']
-        new_media.url = media['url']
+        new_media.url = media['media_url']
         new_media.start_index = media['indices'][0]
         new_media.end_index = media['indices'][1]
 
@@ -134,7 +134,7 @@ def new_tweet(data):
 
     if 'media' in data['entities']:
         for item in data['entities']['media']:
-            print item['type']
+            print item
             new_tweet.add_media(item)
 
     if 'hashtags' in data['entities']:

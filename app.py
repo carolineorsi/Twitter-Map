@@ -8,7 +8,7 @@ from datetime import datetime
 SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', "abcdefg")
 
 app = Flask(__name__)
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql:///carolineorsi/twittermap")
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql:///superbowl")
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SECRET_KEY'] = SECRET_KEY
 
@@ -20,44 +20,19 @@ def index():
     return render_template("index.html")
 
 
-# @app.route("/get-tweet")
-# def get_tweet():
-#     tweets = model.session.query(model.Tweet).all()
-#     tweets_to_return = []
-
-#     for tweet in tweets:
-#         tweet_to_return = {}
-#         tweet_to_return['text'] = tweet.text
-#         tweet_to_return['latitude'] = tweet.latitude
-#         tweet_to_return['longitude'] = tweet.longitude
-#         tweet_to_return['color'] = pick_color(tweet.tag)
-
-#         if tweet.date and tweet.time and tweet.tag:
-#             timestamp = datetime.combine(tweet.date, tweet.time)
-#             tweet_to_return['time'] = int(timestamp.strftime('%s')) - 1421454200
-
-#             tweets_to_return.append(tweet_to_return)
-
-#     response = {'data': tweets_to_return}
-
-#     return jsonify(response)
-
-
 @app.route("/get-tweet")
 def get_tweet():
     team1 = request.args.get('team1')
     team2 = request.args.get('team2')
     start_time = int(request.args.get('start_time'))
     tweets_to_return = []
-    # tags = model.session.query(model.Tag).all()
-    # tags = model.session.query(model.Tag).filter_by(tag='packers').all()
     tags = model.session.query(model.Tag).filter(model.or_(model.Tag.tag==team1, model.Tag.tag==team2)).all()
+    # tags = model.session.query(model.Tag).filter(model.or_(model.Tag.tag==team1, model.Tag.tag==team2)).limit(1000)
 
     for tag in tags:
         tweets = model.session.query(model.Tweet).filter_by(id=tag.tweet_id).all()
         for tweet in tweets:
             tweet_to_return = {}
-            tweet_to_return['text'] = tweet.text
             tweet_to_return['latitude'] = tweet.latitude
             tweet_to_return['longitude'] = tweet.longitude
             tweet_to_return['color'] = pick_color(tag.tag)

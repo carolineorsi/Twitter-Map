@@ -117,26 +117,27 @@
                 var opacity = 1.0
                 var radius = 3
 
-                setTimeout(function () {
-                    circle.setStyle({
-                        fillOpacity: 0.1,
-                        radius: 5
-                    });
-                }, 1000);
-
-                // var burst = setInterval(function() {
-                //     opacity = opacity - 0.1;
-                //     radius ++;
-
-                //     circle.setStyle({
-                //         fillOpacity: opacity,
-                //         radius: radius,
-                //     });
-                // }, 100);
-
                 // setTimeout(function () {
-                //     clearInterval(burst);
-                // }, 1100);
+                //     circle.setStyle({
+                //         opacity: 0,
+                //         fillOpacity: 0,
+                //         radius: 5
+                //     });
+                // }, 1000);
+
+                var burst = setInterval(function() {
+                    opacity = opacity - 0.1;
+                    radius ++;
+
+                    circle.setStyle({
+                        fillOpacity: opacity,
+                        radius: radius,
+                    });
+                }, 100);
+
+                setTimeout(function () {
+                    clearInterval(burst);
+                }, 1100);
             };
 
             function showPopup(lat, lng, text) {

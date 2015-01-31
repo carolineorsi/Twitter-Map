@@ -63,7 +63,7 @@ def random_tweet():
     if tweet.media:
         for media in tweet.media:
             tweet_to_return['media'] = media.url
-            print media
+        print media
 
     return jsonify(tweet_to_return)
 

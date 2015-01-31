@@ -141,7 +141,13 @@
             };
 
             function showPopup(lat, lng, text, media) {
-                content = text + "<br><img src='" + media + "'>"
+                if (media) {
+                    content = text + "<br><img width='200px' src='" + media + "'>"
+                }
+                else {
+                    content = text
+                }
+
                 console.log(content);
 
                 var popup = L.popup()
